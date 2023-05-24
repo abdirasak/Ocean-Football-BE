@@ -1,25 +1,21 @@
 const express = require("express");
+const {
+  getArticles,
+  getArticle,
+  postArticle,
+  editArticle,
+  deleteArticle } = require("../middleware/articleController");
 const router = express.Router();
 
-router.get("/", (req, res) => {
-  res.send('Article List')
-});
+router.get("/", getArticles);
 
-router.get("/:id", (req, res) => {
-  res.status(200).send(`Article ${req.params.id}`)
-});
+router.get("/:id", getArticle);
 
-router.post("/", (req, res) => {
-  res.status(201).send('Post Article')
-});
+router.post("/", postArticle);
 
-router.put("/:id", (req, res) => {
-  res.status(200).send(`Edit Article number ${req.params.id}`)
-});
+router.put("/:id", editArticle);
 
-router.delete("/:id", (req, res) => {
-  res.status(200).send(`Delete Article number ${req.params.id}`)
-});
+router.delete("/:id", deleteArticle);
 
 
 module.exports = router;
