@@ -4,7 +4,7 @@ const {
   getArticle,
   postArticle,
   editArticle,
-  deleteArticle } = require("../middleware/articleController");
+  deleteArticle } = require("../controllers/articleController");
 const router = express.Router();
 
 router.get("/", getArticles);
