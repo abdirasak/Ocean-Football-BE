@@ -6,16 +6,17 @@ const {
   editArticle,
   deleteArticle } = require("../controllers/articleController");
 const router = express.Router();
+const { protect } = require('../middleware/auth')
 
 router.get("/", getArticles);
 
 router.get("/:id", getArticle);
 
-router.post("/", postArticle);
+router.post("/", protect, postArticle);
 
-router.put("/:id", editArticle);
+router.put("/:id", protect, editArticle);
 
-router.delete("/:id", deleteArticle);
+router.delete("/:id", protect, deleteArticle);
 
 
 module.exports = router;

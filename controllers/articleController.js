@@ -6,14 +6,14 @@ const ErrorResponse = require("../utils/errorResponse")
 // @route   GET /api/articles
 // @access  Public
 exports.getArticles = async (req, res) => {
+  try {
+    const articles = await Article.find()
+    res.status(200).json({ count: articles.length, data: articles })
 
-  const articles = await Article.find()
-
-  if (!articles) {
-    res.status(404).json({ message: "Article not found" })
+  } catch (error) {
+    next(new ErrorResponse(`Not Found`, 404))
   }
 
-  res.status(200).json({ count: articles.length, data: articles })
 
 }
 
