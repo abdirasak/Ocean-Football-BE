@@ -1,5 +1,5 @@
 const Article = require("../models/ArticleModal")
-
+const ErrorResponse = require("../utils/errorResponse")
 // @desc    Get All articles with params
 // @route   GET /api/articles
 // @access  Public
@@ -18,14 +18,17 @@ exports.getArticles = async (req, res) => {
 // @desc    Get single Article
 // @route   GET /api/articles/:id
 // @access  Public
-exports.getArticle = async (req, res) => {
+exports.getArticle = async (req, res, next) => {
 
-  const article = await Article.findById(req.params.id)
-  if (!article) {
-    return res.status(404).json({ message: "Article not found" })
+  try {
+    const article = await Article.findById(req.params.id)
+    if (!article) {
+      return res.status(400).json({ message: "Article not found" })
+    }
+    res.status(200).json({ data: article })
+  } catch (error) {
+    next(new ErrorResponse(`Article not found with id of ${req.params.id}`, 404))
   }
-
-  res.status(200).json({ data: article })
 }
 
 // @desc    Post an article
