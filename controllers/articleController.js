@@ -1,5 +1,7 @@
 const Article = require("../models/ArticleModal")
 const ErrorResponse = require("../utils/errorResponse")
+
+
 // @desc    Get All articles with params
 // @route   GET /api/articles
 // @access  Public
