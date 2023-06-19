@@ -24,9 +24,11 @@ exports.getArticle = async (req, res, next) => {
 
   try {
     const article = await Article.findById(req.params.id)
+
     if (!article) {
-      return res.status(400).json({ message: "Article not found" })
+      return next(new ErrorResponse(`Article not found`, 404))
     }
+
     res.status(200).json({ data: article })
   } catch (error) {
     next(new ErrorResponse(`Article not found with id of ${req.params.id}`, 404))
@@ -37,53 +39,70 @@ exports.getArticle = async (req, res, next) => {
 // @route   POST /api/articles/
 // @access  Private
 exports.postArticle = async (req, res) => {
+  //add user to body
+  req.body.user = req.user.id
+  req.body.articleImage = req.file.path
 
-  if (!req.body) {
-    return res.status(400).json({ message: "Please fill all fields" })
-  }
-
-  const postArticle = await Article.create({
-    title: req.body.title,
-    team: req.body.team,
-    league: req.body.league,
-    article: req.body.article
-  })
+  //create article
+  const postArticle = await Article.create(req.body)
   res.status(201).json({ data: postArticle })
 }
 
 // @desc    Update article by the user or admin
 // @route   POST /api/articles/:id
 // @access  Private
-exports.editArticle = async (req, res) => {
-  //find article by id
-  const article = await Article.findById(req.params.id)
+exports.editArticle = async (req, res, next) => {
+  try {
+    //find article by id
+    let article = await Article.findById(req.params.id)
 
-  //check if article exists 
-  if (!article) {
-    res.status(400).json({ message: "Article not found" })
+    //check if article exists 
+    if (!article) {
+      return next(new ErrorResponse(`Article not found`, 404))
+    }
+
+
+    //check if user is publisher or the article
+    if (article.user.toString() !== req.user.id && req.user.role !== 'admin') {
+      return next(new ErrorResponse(`The user ${req.user.id} is not authorised to edit this article`, 403))
+    }
+
+    article = await Article.findByIdAndUpdate(req.params.id, req.body, {
+      new: true,
+    })
+
+    res.status(200).json({ message: article })
+  } catch (error) {
+    next(new ErrorResponse(`Article not found`, 404))
   }
 
-  const updatedArticle = await Article.findByIdAndUpdate(req.params.id, req.body, {
-    new: true,
-  })
-  res.status(200).json({ message: updatedArticle })
 
 }
 
 // @desc    Delete article by a user or admin
 // @route   POST /api/articles/:id
 // @access  Private
-exports.deleteArticle = async (req, res) => {
-  //find article 
-  const article = await Article.findById(req.params.id)
+exports.deleteArticle = async (req, res, next) => {
+  try {
 
-  //check if article exists 
-  if (!article) {
-    res.status(400).json('Article not found')
+    //find article 
+    const article = await Article.findById(req.params.id)
+
+    //check if article exists 
+    if (!article) {
+      return next(new ErrorResponse(`Article not found`, 404))
+    }
+
+    //check if user is publisher or the article
+    if (article.user.toString() !== req.user.id && req.user.role !== 'admin') {
+      return next(new ErrorResponse(`The user ${req.user.id} is not authorised to delete this article`, 403))
+    }
+
+    await article.deleteOne(article._id)
+    res.status(200).json({ success: true, data: {} })
+
+  } catch (error) {
+    next(new ErrorResponse(`Article not found`, 404))
   }
-
-  await Article.findByIdAndDelete(article)
-  res.status(200).json({ id: req.params.id })
-
 }
 

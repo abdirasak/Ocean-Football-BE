@@ -2,6 +2,12 @@ const mongoose = require('mongoose')
 
 const articleSchema = mongoose.Schema({
 
+  user: {
+    type: mongoose.Schema.ObjectId,
+    ref: 'User',
+    require: true
+  },
+
   title: {
     type: String,
     required: [true, 'Please add title']
@@ -21,6 +27,11 @@ const articleSchema = mongoose.Schema({
     type: String,
     required: [true, 'Please add article']
   },
+
+  articleImage: {
+    type: String,
+    required: [true, 'Please add an image']
+  }
 
 })
 
