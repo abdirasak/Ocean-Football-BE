@@ -7,9 +7,9 @@ Follow these steps to set up the Ocean Football Backend on your local machine.
 
 ## Prerequisites
 
-"*" Node.js and npm: Make sure you have Node.js and npm (Node Package Manager) installed. You can download them from the official Node.js website.
+* Node.js and npm: Make sure you have Node.js and npm (Node Package Manager) installed. You can download them from the official Node.js website.
 
-"*" MongoDB: This project uses MongoDB as its database. Make sure you have a MongoDB instance set up and running.
+* MongoDB: This project uses MongoDB as its database. Make sure you have a MongoDB instance set up and running.
 
 ## Installation
 
@@ -21,3 +21,17 @@ Follow these steps to set up the Ocean Football Backend on your local machine.
 
 3. Install the dependencies:
 ### `npm install`
+
+## Configuration
+
+1. Create a .env file in the project root directory to store your environment variables. You can use the .env.example file as a template.
+
+2. Configure the database connection by providing your MongoDB URI in the .env file.
+
+3. Customize other configuration options as needed.
+
+## License
+This project is licensed under the MIT License.
+
+##
+Thank you for your interest in the Ocean Football Backend! If you have any questions or need further assistance, feel free to contact us.
