@@ -24,7 +24,7 @@ Follow these steps to set up the Ocean Football Backend on your local machine.
 
 ## Configuration
 
-1. Create a .env file in the project root directory to store your environment variables. You can use the .env.example file as a template.
+1. Create a .env file in the project root directory to store your environment variables.
 
 2. Configure the database connection by providing your MongoDB URI in the .env file.
 
